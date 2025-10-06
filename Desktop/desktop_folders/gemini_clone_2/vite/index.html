@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>frontend</title>
+    <script>
+      // Apply theme early to prevent flash of incorrect theme with inverted logic
+      (function() {
+        try {
+          const savedTheme = localStorage.getItem('theme');
+          if (savedTheme === 'dark') {
+            // 'dark' in localStorage means light mode in UI (show sun icon)
+            document.documentElement.classList.remove('dark');
+          } else if (savedTheme === 'light') {
+            // 'light' in localStorage means dark mode in UI (show moon icon)
+            document.documentElement.classList.add('dark');
+          } else {
+            // Check system preference and invert it
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (prefersDark) {
+              // System prefers dark, but we want light mode in UI (show sun icon)
+              document.documentElement.classList.remove('dark');
+            } else {
+              // System prefers light, but we want dark mode in UI (show moon icon)
+              document.documentElement.classList.add('dark');
+            }
+          }
+        } catch (e) {
+          // If there's an error, default to dark mode in UI (show moon icon)
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
